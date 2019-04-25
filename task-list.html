@@ -14,7 +14,7 @@
     </style>
     <div class="task-list-container">
       <ul class="task-list">
-        <template is="dom-repeat" items="[[taskList]]">
+        <template is="dom-repeat" items="[[taskList]]" sort="sortTask">
           <li><task-element
             key="[[item.id]]"
             done="[[item.done]]"
@@ -33,6 +33,13 @@
         return {
           taskList: Array
         };
+      }
+
+      sortTask(prevValue, currentValue) {
+        let heighPrev = prevValue.canceled + (prevValue.done * 2);
+        let heighCurr = currentValue.canceled + (currentValue.done * 2);
+
+        return heighPrev - heighCurr;
       }
     }
 
