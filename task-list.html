@@ -6,15 +6,41 @@
     <style>
       :host {
         display: block;
+        --primary-color: var(--primary-color-task-list, #3f51b5);
+        --secoundary-color: var(--secoundary-color-task-list, #ffffff);
       }
 
       .task-list {
         list-style-type: none;
       }
+
+      .text-filter {
+        border: 1px solid #ccc;
+        height: 35px;
+        width: 100%;
+        margin: 5px 0px;
+        border-radius: 4px;
+        font-size: 20px;
+      }
+
+      .text-filter:focus {
+        outline: none;
+        border: 3px solid var(--primary-color);
+      }
+
     </style>
     <div class="task-list-container">
+      <form class="filter">
+        <label for="input-filter">[[filterLabel]]</label>
+        <input type="text" name="input-filter" class="text-filter" value="{{filterValue::input}}"/>
+      </form>
       <ul class="task-list">
-        <template is="dom-repeat" items="[[taskList]]" sort="sortTask">
+        <template
+        is="dom-repeat"
+        items="[[taskList]]"
+        sort="sortTask"
+        filter="{{filterTaskTitle(filterValue)}}"
+        >
           <li><task-element
             key="[[item.id]]"
             done="[[item.done]]"
@@ -31,7 +57,12 @@
       static get is() { return 'task-list'; }
       static get properties() {
         return {
-          taskList: Array
+          taskList: Array,
+          filterValue: String,
+          filterLabel: {
+            type: String,
+            value: 'Task filter'
+          }
         };
       }
 
@@ -40,6 +71,12 @@
         let heighCurr = currentValue.canceled + (currentValue.done * 2);
 
         return heighCurr - heighPrev;
+      }
+
+      filterTaskTitle(text) {
+        return function (value) {
+          return value.title.indexOf(text) > -1;
+        }
       }
     }
 
