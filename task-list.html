@@ -35,11 +35,11 @@
         };
       }
 
-      sortTask(prevValue, currentValue) {
+      sortTask(currentValue, prevValue) {
         let heighPrev = prevValue.canceled + (prevValue.done * 2);
         let heighCurr = currentValue.canceled + (currentValue.done * 2);
 
-        return heighPrev - heighCurr;
+        return heighCurr - heighPrev;
       }
     }
 
